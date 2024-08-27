@@ -1,14 +1,19 @@
 import { Lock, Mail, UserRound } from "lucide-react";
-import { FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
+import useSignup from "../../hooks/useSignup";
+import { SignUpFormFields } from "../../model/Signup/SignUpFormFields";
 
 export default function SignUp() {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [displayName, setDisplayName] = useState<string>("");
+  const [signupFields, setSignupFields] = useState<SignUpFormFields>({ displayName: "", email: "", password: "" });
+  const { signup } = useSignup();
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log(e);
+    await signup(signupFields);
+  }
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSignupFields((prev) => ({...prev, [e.target.id]: e.target.value }))
   }
 
   return (
@@ -22,8 +27,8 @@ export default function SignUp() {
           <div className="flex items-center gap-1 bg-white p-2 rounded-lg">
             <Mail />
             <input
-            onChange={(e) => setEmail(e.target.value)} 
-            value={email} 
+            onChange={(e) => handleChange(e)} 
+            value={signupFields.email} 
             type="email" 
             id="email" 
             className="outline-none w-full"
@@ -35,23 +40,23 @@ export default function SignUp() {
           <div className="flex items-center gap-1 bg-white p-2 rounded-lg">
             <Lock />
             <input 
-            onChange={(e) => setPassword(e.target.value)}
-            value={password} 
+            onChange={(e) => handleChange(e)}
+            value={signupFields.password} 
             type="password" 
             id="password" 
             className="outline-none w-full"
             />  
           </div>
         </label>
-        <label htmlFor="name">
+        <label htmlFor="displayName">
           <p>Name</p>
           <div className="flex items-center gap-1 bg-white p-2 rounded-lg">
             <UserRound />
             <input 
-            onChange={(e) => setDisplayName(e.target.value)}
-            value={displayName} 
+            onChange={(e) => handleChange(e)}
+            value={signupFields.displayName} 
             type="text" 
-            id="name" 
+            id="displayName" 
             className="outline-none w-full"
             />  
           </div>
