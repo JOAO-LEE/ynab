@@ -4,6 +4,12 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --brownish: 45, 8, 15;
+  --redish: 236, 59, 67;
+  --off-white: 254, 238, 223;
+  --bluesy: 41, 141, 191;
+}
 
 body {
   font-family: "Montserrat", sans-serif;
@@ -11,6 +17,7 @@ body {
   font-style: normal;
   margin: 0;
   font-size: 1.1em;
+  min-height: 100vh
 }
 
 ul, li, p, h1, h2, h3, h4 {
