@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .form-section {
+    @apply bg-off-white p-8 mx-auto w-full md:w-1/2 rounded shadow-md flex flex-col justify-center;
+  }
+}
