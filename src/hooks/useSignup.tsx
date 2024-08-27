@@ -2,10 +2,10 @@ import { useState } from "react";
 import { auth } from "../firebase-config";
 import { SignUpFormFields } from "../model/Signup/SignUpFormFields";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { FirebaseError } from "firebase/app";
 
-
-function useSignup() {
-  const [error, setError] = useState<unknown>(null)
+export function useSignup() {
+  const [error, setError] = useState<string | null>(null)
   const [isPending, setIsPending] = useState<boolean>(false);
   
   const signup = async ({ displayName, email, password }: SignUpFormFields) => {
@@ -24,8 +24,9 @@ function useSignup() {
       setError(null);
 
     } catch (e: unknown) {
-      console.log(e);
-      setError(e);
+      if (e instanceof FirebaseError || e instanceof Error) {
+        setError(e.message);
+      }
       setIsPending(false);
     }
   }
@@ -33,4 +34,3 @@ function useSignup() {
   return { error, isPending, signup };
 }
 
-export default useSignup
