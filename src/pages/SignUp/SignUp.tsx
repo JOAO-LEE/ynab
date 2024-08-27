@@ -1,4 +1,4 @@
-import { Lock, Mail, UserRound } from "lucide-react";
+import { Loader, Lock, Mail, UserRound } from "lucide-react";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useSignup } from "../../hooks/useSignup";
 import { SignUpFormFields } from "../../model/Signup/SignUpFormFields";
@@ -63,11 +63,24 @@ export default function SignUp() {
         </label>
         <button 
         type="submit"
-        className="border border-bluesy p-2 rounded-lg hover:bg-bluesy hover:text-off-white transition duration-200 w-1/3"
+        disabled={isPending}
+        className="border border-bluesy p-2 rounded-lg bg-bluesy text-off-white transition duration-200 w-1/3 hover:opacity-80 disabled:opacity-80 h-12"
         >
-          Login
+          { 
+            !isPending 
+            ? 
+              "Login" 
+            : 
+              <Loader className="animate-spin text-center mx-auto" />
+          }
         </button>
-        {!!error && <span className="text-sm text-redish font-semibold">{error.replace("Firebase:", "")}</span>}
+        {
+          !!error 
+          && 
+            (
+              <span className="text-sm text-redish font-semibold">{error.replace("Firebase:", "")}</span>
+            )
+        }
       </form>
     </section>
   )

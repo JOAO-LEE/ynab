@@ -2,7 +2,6 @@ import { useState } from "react";
 import { auth } from "../firebase-config";
 import { SignUpFormFields } from "../model/Signup/SignUpFormFields";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { FirebaseError } from "firebase/app";
 
 export function useSignup() {
   const [error, setError] = useState<string | null>(null)
@@ -14,7 +13,6 @@ export function useSignup() {
 
     try {
       const response = await createUserWithEmailAndPassword(auth, email, password);
-      console.log(response.user);
       if (!response) {
         throw new Error("Could not complete signup.");
       }
@@ -24,9 +22,11 @@ export function useSignup() {
       setError(null);
 
     } catch (e: unknown) {
-      if (e instanceof FirebaseError || e instanceof Error) {
+      if (e instanceof Error) {
         setError(e.message);
       }
+      
+    } finally {
       setIsPending(false);
     }
   }
