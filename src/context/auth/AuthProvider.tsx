@@ -1,29 +1,29 @@
 import { ReactNode, useReducer } from 'react'
 import { AuthContext } from './AuthContext'
-import { User } from 'firebase/auth';
+import { UserInfo } from 'firebase/auth';
 import { AuthReducerEnum } from '../../enum/AuthReducer.enum';
+import { AuthUser } from '../../model/User/User';
 
-export const authReducer = (state: User, action: AuthReducerEnum) => {
-    switch (action) {
+const authReducer = (user: AuthUser, action: {type: AuthReducerEnum, payload: UserInfo}) => {
+  const {type, payload} = action; 
+    switch (type) {
       case AuthReducerEnum.LOGIN:
-        break;
+        return payload;
       case AuthReducerEnum.SIGNUP:
-        break;
+        return payload;
       case AuthReducerEnum.LOGOUT:
-        break;
+        return null
       default:
-        return state;
-        break;
+        return user;
     }
-}
-
+};
 
 function AuthProvider({children}: {children: ReactNode}) {
-  const [state, dispatch] = useReducer(authReducer, );
-
-
+  const [state, dispatch] = useReducer(authReducer, null); 
   return (
-    <AuthContext.Provider value={{ ...state, dispatch }}>
+    <AuthContext.Provider 
+    value={{ state, dispatch }}
+    >
       {children}
     </AuthContext.Provider>
   )
