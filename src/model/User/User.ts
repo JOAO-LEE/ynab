@@ -3,7 +3,9 @@ import { AuthReducerEnum } from "../../enum/AuthReducer.enum";
 
 export type AuthUser = UserInfo | null;
 
+export type AuthAction = { type: AuthReducerEnum, payload?: AuthUser }
+
 export type UserReducer = {
   state: AuthUser
-  dispatch: React.Dispatch<{ type: AuthReducerEnum, payload: UserInfo}>
+  dispatch: React.Dispatch<AuthAction>
 };

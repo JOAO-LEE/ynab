@@ -6,7 +6,7 @@ import { useAuthContext } from "./useAuthContext";
 import { AuthReducerEnum } from "../enum/AuthReducer.enum";
 
 export function useSignup() {
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null);
   const [isPending, setIsPending] = useState<boolean>(false);
   const {dispatch} = useAuthContext();
   
@@ -21,9 +21,7 @@ export function useSignup() {
       }
       
       await updateProfile(response.user, { displayName });
-      dispatch({ type: AuthReducerEnum.LOGIN, payload: response.user })
-
-      setIsPending(false);
+      dispatch({ type: AuthReducerEnum.LOGIN, payload: response.user });
       setError(null);
 
     } catch (e: unknown) {
