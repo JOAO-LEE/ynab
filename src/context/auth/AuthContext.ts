@@ -1,5 +1,4 @@
-import { User } from "firebase/auth";
 import { createContext } from "react";
-import { UserReducer } from "../../model/Auth/UserReducer";
+import { UserReducer } from "../../model/User/User";
 
 export const AuthContext = createContext<UserReducer | null>(null);

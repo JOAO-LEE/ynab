@@ -2,10 +2,13 @@ import { useState } from "react";
 import { auth } from "../firebase-config";
 import { SignUpFormFields } from "../model/Signup/SignUpFormFields";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { useAuthContext } from "./useAuthContext";
+import { AuthReducerEnum } from "../enum/AuthReducer.enum";
 
 export function useSignup() {
   const [error, setError] = useState<string | null>(null)
   const [isPending, setIsPending] = useState<boolean>(false);
+  const {dispatch} = useAuthContext();
   
   const signup = async ({ displayName, email, password }: SignUpFormFields) => {
     setError(null);
@@ -18,6 +21,8 @@ export function useSignup() {
       }
       
       await updateProfile(response.user, { displayName });
+      dispatch({ type: AuthReducerEnum.LOGIN, payload: response.user })
+
       setIsPending(false);
       setError(null);
 
