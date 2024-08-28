@@ -19,7 +19,7 @@ export const authReducer = (state: User, action: AuthReducerEnum) => {
 
 
 function AuthProvider({children}: {children: ReactNode}) {
-  const [state, dispatch] = useReducer(authReducer, { user: null });
+  const [state, dispatch] = useReducer(authReducer, );
 
 
   return (
