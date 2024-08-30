@@ -1,14 +1,16 @@
-import { Lock, Mail } from "lucide-react";
+import { Loader, Lock, Mail } from "lucide-react";
 import { FormEvent, useState } from "react";
 import "./Login.css";
+import { useLogin } from "../../hooks/useLogin";
 
 export default function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const { login, isPending, error } = useLogin();
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log(e);
+    login({email, password});
   }
 
   return (
@@ -43,12 +45,26 @@ export default function Login() {
           />  
         </div>
       </label>
-        <button 
+      <button 
         type="submit"
-        className="border border-bluesy p-2 rounded-lg hover:bg-bluesy hover:text-off-white transition duration-200 w-1/3"
+        disabled={isPending}
+        className="border border-bluesy p-2 rounded-lg bg-bluesy text-off-white transition duration-200 w-1/3 hover:opacity-80 disabled:opacity-80 h-12"
         >
-          Login
+          { 
+            !isPending 
+            ? 
+              "Login" 
+            : 
+              <Loader className="animate-spin text-center mx-auto" />
+          }
         </button>
+        {
+          !!error 
+          && 
+            (
+              <span className="text-sm text-redish font-semibold">{error.replace("Firebase:", "")}</span>
+            )
+        }
       </form>
     </section>
   )

@@ -6,7 +6,7 @@ import { AuthReducerEnum } from "../enum/AuthReducer.enum";
 
 export function useLogin() {
   const [isCancelled, setIsCancelled] = useState<boolean>(false);
-  const [error, setError] = useState<unknown | null>(null);
+  const [error, setError] = useState<null | string>(null);
   const [isPending, setIsPending] = useState<boolean>(false);
   const { dispatch } = useAuthContext();
 
@@ -23,10 +23,12 @@ export function useLogin() {
       setError(null);
       }
       
-    } catch (error: unknown) {
-      if (!isCancelled) {
-        setError(error);
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        if (!isCancelled) {
+          setError(e.message);
         }
+      }
     } finally {
       setIsPending(false);
     }
