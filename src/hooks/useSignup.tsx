@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { auth } from "../firebase-config";
 import { SignUpFormFields } from "../model/Signup/SignUpFormFields";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
@@ -6,6 +6,8 @@ import { useAuthContext } from "./useAuthContext";
 import { AuthReducerEnum } from "../enum/AuthReducer.enum";
 
 export function useSignup() {
+  const [isCancelled, setIsCancelled] = useState<boolean>(false);
+
   const [error, setError] = useState<string | null>(null);
   const [isPending, setIsPending] = useState<boolean>(false);
   const {dispatch} = useAuthContext();
@@ -24,15 +26,26 @@ export function useSignup() {
       dispatch({ type: AuthReducerEnum.LOGIN, payload: response.user });
       setError(null);
 
+      if (!isCancelled) {
+        setIsPending(false);
+        setError(null);
+        }
+
     } catch (e: unknown) {
       if (e instanceof Error) {
-        setError(e.message);
+        if (!isCancelled) {
+          setError(e.message);
+          }
       }
       
     } finally {
       setIsPending(false);
     }
   }
+
+  useEffect(() => {
+    return () => setIsCancelled(true);
+  }, []);
 
   return { error, isPending, signup };
 }
