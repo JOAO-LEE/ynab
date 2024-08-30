@@ -1,7 +1,10 @@
 import { Moon } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useLogout } from "../../hooks/useLogout";
 
 export default function NavBar() {
+  const { logout } = useLogout();
+  
   return (
     <header className="flex border-b-2 shadow-md items-center justify-between">
       <div className="text-center p-4">
@@ -20,6 +23,13 @@ export default function NavBar() {
               <Link to="/signup">
                 Sign Up
               </Link>
+            </li>
+            <li>
+              <button 
+              onClick={logout}
+              >
+                Logout
+              </button>
             </li>
           </ul>
         </nav>
