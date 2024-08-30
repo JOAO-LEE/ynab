@@ -35,9 +35,8 @@ export function useSignup() {
       if (e instanceof Error) {
         if (!isCancelled) {
           setError(e.message);
-          }
+        }
       }
-      
     } finally {
       setIsPending(false);
     }
