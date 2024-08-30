@@ -1,9 +1,11 @@
 import { Moon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLogout } from "../../hooks/useLogout";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 export default function NavBar() {
   const { logout } = useLogout();
+  const { state } = useAuthContext();
   
   return (
     <header className="flex border-b-2 shadow-md items-center justify-between">
@@ -14,23 +16,33 @@ export default function NavBar() {
       <div className="flex items-center p-4 gap-4">
         <nav>
           <ul className="flex gap-4">
-            <li>
-              <Link to="/login">
-                Login
-              </Link>
-            </li>
-            <li>
-              <Link to="/signup">
-                Sign Up
-              </Link>
-            </li>
-            <li>
-              <button 
-              onClick={logout}
-              >
-                Logout
-              </button>
-            </li>
+            {
+              !state 
+              ? 
+                <>
+                  <li>
+                    <Link to="/login">
+                      Login
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/signup">
+                      Sign Up
+                    </Link>
+                  </li>
+                </>
+              :
+                <>
+                <li><span>Hello,</span>{state.displayName}</li>
+                  <li>
+                    <button 
+                    onClick={logout}
+                    >
+                      Logout
+                    </button>
+                  </li>
+                </>
+            }
           </ul>
         </nav>
         <Moon />
