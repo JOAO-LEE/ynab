@@ -1,7 +1,10 @@
-import { UserInfo } from "firebase/auth";
+import { User } from "firebase/auth";
 import { AuthReducerEnum } from "../../enum/AuthReducer.enum";
 
-export type AuthUser = UserInfo | null;
+export type AuthUser = {
+  user: User | null;
+  authIsReady?: boolean;
+}
 
 export type AuthAction = { type: AuthReducerEnum, payload?: AuthUser }
 

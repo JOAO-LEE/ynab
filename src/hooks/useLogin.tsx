@@ -16,7 +16,7 @@ export function useLogin() {
 
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
-      dispatch({ type: AuthReducerEnum.LOGIN, payload: response.user });
+      dispatch({ type: AuthReducerEnum.LOGIN, payload: { user: response.user }});
 
       if (!isCancelled) {
       setIsPending(false);

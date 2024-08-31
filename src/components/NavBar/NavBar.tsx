@@ -17,31 +17,35 @@ export default function NavBar() {
         <nav>
           <ul className="flex gap-4">
             {
-              !state 
+              !state.user 
               ? 
-                <>
-                  <li>
-                    <Link to="/login">
-                      Login
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/signup">
-                      Sign Up
-                    </Link>
-                  </li>
-                </>
+                ( 
+                  <>
+                    <li>
+                      <Link to="/login">
+                        Login
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/signup">
+                        Sign Up
+                      </Link>
+                    </li>
+                  </>
+                )
               :
-                <>
-                <li><span>Hello,</span>{state.displayName}</li>
-                  <li>
-                    <button 
-                    onClick={logout}
-                    >
-                      Logout
-                    </button>
-                  </li>
-                </>
+                (
+                  <>
+                    <li><span>Hello,</span> {state?.user!.displayName}</li>
+                      <li>
+                        <button 
+                        onClick={logout}
+                        >
+                          Logout
+                        </button>
+                      </li>
+                  </>
+                )
             }
           </ul>
         </nav>

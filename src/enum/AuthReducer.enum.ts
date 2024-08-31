@@ -1,5 +1,6 @@
 export enum AuthReducerEnum {
   LOGIN,
   LOGOUT,
-  SIGNUP
+  SIGNUP,
+  AUTH_IS_READY
 };

@@ -23,7 +23,7 @@ export function useSignup() {
       }
       
       await updateProfile(response.user, { displayName });
-      dispatch({ type: AuthReducerEnum.LOGIN, payload: response.user });
+      dispatch({ type: AuthReducerEnum.LOGIN, payload: { user: response.user }});
       setError(null);
 
       if (!isCancelled) {
