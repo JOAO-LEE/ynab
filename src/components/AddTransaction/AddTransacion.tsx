@@ -1,13 +1,19 @@
-import { CircleDollarSign, Pencil } from "lucide-react";
+import { CircleDollarSign, Pencil, Plus } from "lucide-react";
 import { Transaction } from "../../model/Transaction/Transaction";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 
 export default function AddTransacion() {
   const [transaction, setTransaction] = useState<Transaction>({ name: "", amount: "" });
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    console.log(e)
+  }
+
   return (
-    <div className="border-spacing-3 rounded-xl p-4 shadow-xl">
+    <div>
       <h3 className="text-3xl">Add a transaction</h3>
-      <form className="p-4 text-lg flex flex-col gap-4">
+      <form onSubmit={handleSubmit} className="p-4 text-lg flex flex-col gap-4 border rounded-xl shadow-xl">
         <label htmlFor="name">
           <p>Name</p>
           <div className="flex items-center gap-2 bg-white p-2 rounded-lg border">
@@ -19,6 +25,7 @@ export default function AddTransacion() {
             name="name" 
             id="name" 
             className="outline-none w-full"
+            required
             />
           </div>
         </label>
@@ -33,9 +40,14 @@ export default function AddTransacion() {
             name="amount" 
             id="amount" 
             className="outline-none w-full"
+            required
             />
           </div>
         </label>
+        <button className="text-base border border-bluesy p-2 rounded-lg text-bluesy flex justify-center gap-1">
+          <p>Add</p>
+          <Plus className="size-5 " />
+        </button>
       </form>
     </div>
   )
