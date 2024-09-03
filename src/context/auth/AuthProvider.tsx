@@ -10,11 +10,11 @@ const authReducer = (state: AuthUser, action: AuthAction) => {
   
     switch (type) {
       case AuthReducerEnum.LOGIN:
-        return {...state, user: action.payload!.user, authIsReady: true };
+        return {...state, user: action.payload!.user };
       case AuthReducerEnum.LOGOUT:
         return {...state, user: null, authIsReady: false};
       case AuthReducerEnum.AUTH_IS_READY:
-        return {...state, user: action.payload!.user, authIsReady: true}
+        return {...state, user: action.payload!.user, authIsReady: true }
       default:
         return state;
     }
@@ -32,7 +32,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   }, []);
 
-  console.log(state.user);
+  console.log("auth-context test:", {state: state.user});
 
   return (
     <AuthContext.Provider 
