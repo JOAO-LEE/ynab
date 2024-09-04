@@ -1,3 +1,4 @@
 export enum DocumentReducerEnum {
-  IS_PENDING
+  IS_PENDING,
+  ADDED_DOC
 }
