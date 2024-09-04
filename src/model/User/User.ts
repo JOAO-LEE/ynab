@@ -1,14 +1,13 @@
 import { User } from "firebase/auth";
 import { AuthReducerEnum } from "../../enum/AuthReducer.enum";
+import { ReducerAction } from "../common/ReducerAction";
 
 export type AuthUser = {
   user: User | null;
   authIsReady?: boolean;
 }
 
-export type AuthAction = { type: AuthReducerEnum, payload?: AuthUser }
-
 export type UserReducer = {
   state: AuthUser
-  dispatch: React.Dispatch<AuthAction>
+  dispatch: React.Dispatch<ReducerAction<AuthReducerEnum, AuthUser>>
 };

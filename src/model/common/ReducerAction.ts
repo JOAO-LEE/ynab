@@ -1,0 +1,1 @@
+export type ReducerAction<T, M> = { type: T, payload?: M };

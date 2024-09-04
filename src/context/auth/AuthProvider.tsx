@@ -1,13 +1,14 @@
 import { ReactNode, useEffect, useReducer } from "react";
 import { AuthContext } from "./AuthContext";
 import { AuthReducerEnum } from "../../enum/AuthReducer.enum";
-import { AuthAction, AuthUser } from "../../model/User/User";
+import { AuthUser } from "../../model/User/User";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase-config";
+import { ReducerAction } from "../../model/common/ReducerAction";
 
-const authReducer = (state: AuthUser, action: AuthAction) => {
+
+const authReducer = (state: AuthUser, action: ReducerAction<AuthReducerEnum, AuthUser>) => {
   const { type } = action; 
-  
     switch (type) {
       case AuthReducerEnum.LOGIN:
         return {...state, user: action.payload!.user };
