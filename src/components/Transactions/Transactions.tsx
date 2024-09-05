@@ -1,4 +1,4 @@
-function Transactions() {
+function Transactions({ uid }: { uid: string }) {
 
   return (
     <aside>

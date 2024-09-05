@@ -2,9 +2,10 @@ import { useReducer, useEffect, useState } from "react";
 import { db } from "../firebase-config";
 import { Document } from "../model/Document/Document";
 import { ReducerAction } from "../model/common/ReducerAction";
-import { collection as col, addDoc } from "firebase/firestore";
+import { collection as col, addDoc, serverTimestamp } from "firebase/firestore";
 import { DocumentReducerEnum } from "../enum/Document.enum";
 import { Transaction } from "../model/Transaction/Transaction";
+import { FirebaseError } from "firebase/app";
 
 
 const inicitalState: Document = {
@@ -18,9 +19,11 @@ const firestoreReducer = (state: Document, action: ReducerAction<DocumentReducer
   const { type } = action;
   switch (type) {
     case DocumentReducerEnum.IS_PENDING:
-      return {...state, isPending: true };
+      return { document: null, success: false, isPending: true, error: null };
     case DocumentReducerEnum.ADDED_DOC:
-      return { isPending: false, document: action.payload!, success: true, error: null };
+      return { document: action.payload!.document!, error: null, success: true, isPending: false };
+    case DocumentReducerEnum.ERROR:
+      return { error: action.payload!.error, isPending: false, document: null, success: false };
     default:
       return state;
   }
@@ -32,23 +35,19 @@ export function useFirestore(collection: string) {
   
   const dispatchIfNotCancelled = (action: ReducerAction<DocumentReducerEnum, Document>) => {
     if (!isCancelled) {
-      dispatch(action)
+      dispatch(action);
     }
-  }
+  };
 
-  const addDocument = async (doc: Transaction) => {
-    dispatch({ type: DocumentReducerEnum.IS_PENDING });
+  const addDocument = async ({ amount, name, uid }: Transaction) => {
+    dispatch({ type: DocumentReducerEnum.IS_PENDING});
     try {
-      const addedDocRef = await addDoc(col(db, collection), doc);
-      const addedDoc: Document = {
-        document: {id: addedDocRef.id, doc},
-        isPending: false, 
-        success: true,
-        error: null
-      }
-      dispatchIfNotCancelled({ type: DocumentReducerEnum.ADDED_DOC, payload: addedDoc });
+      await addDoc(col(db, collection), { amount, name, uid, createdAt: serverTimestamp()});
+      dispatchIfNotCancelled({ type: DocumentReducerEnum.ADDED_DOC });
     } catch (error) {
-      console.log(error);
+      if (error instanceof Error || error instanceof FirebaseError) {
+        dispatchIfNotCancelled({ type: DocumentReducerEnum.ERROR, payload: {...response, error: error.message } });
+      }
     }
   };
 

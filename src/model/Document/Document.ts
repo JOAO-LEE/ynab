@@ -1,8 +1,8 @@
-import { DocumentData } from "firebase/firestore";
+import { Transaction } from "../Transaction/Transaction";
 
 export type Document = {
-  document: null | DocumentData,
+  document: null | Transaction,
   isPending: boolean,
-  error: boolean | null,
+  error: boolean | null | string,
   success: boolean | null
 }

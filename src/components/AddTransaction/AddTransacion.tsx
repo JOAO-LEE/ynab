@@ -1,16 +1,20 @@
 import { CircleDollarSign, Pencil, Plus } from "lucide-react";
 import { Transaction } from "../../model/Transaction/Transaction";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useFirestore } from "../../hooks/useFirestore";
 
-export default function AddTransacion() {
+export default function AddTransacion({ uid }: { uid: string }) {
   const [transaction, setTransaction] = useState<Transaction>({ name: "", amount: "" });
-  const { addDocument } = useFirestore("transactions");
+  const { addDocument, response } = useFirestore("transactions");
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    addDocument(transaction);
+    addDocument({ ...transaction, uid });
   };
+
+  useEffect(() => {
+    setTransaction({ name: "", amount: "" })
+  }, [response.success]);
 
   return (
     <div>
@@ -38,7 +42,7 @@ export default function AddTransacion() {
             <input
             value={transaction?.amount}
             onChange={(e) => setTransaction(prev => ({...prev, amount: e.target.value}))} 
-            type="text" 
+            type="number" 
             name="amount" 
             id="amount" 
             className="outline-none w-full"
