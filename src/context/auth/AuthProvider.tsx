@@ -33,8 +33,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   }, []);
 
-  console.log("auth-context test:", {state: state.user});
-
   return (
     <AuthContext.Provider 
     value={{ state , dispatch }}

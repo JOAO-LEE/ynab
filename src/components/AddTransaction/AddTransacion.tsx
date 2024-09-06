@@ -47,12 +47,13 @@ export default function AddTransacion({ uid }: { uid: string }) {
             id="amount" 
             className="outline-none w-full"
             required
+            min={1}            
             />
           </div>
         </label>
         <button className="text-base border border-bluesy p-2 rounded-lg text-bluesy flex justify-center gap-1">
           <p>Add</p>
-          <Plus className="size-5 " />
+          <Plus className="size-5" />
         </button>
       </form>
     </div>

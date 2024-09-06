@@ -3,4 +3,5 @@ export type Transaction = {
   amount: string
   createdAt?: string
   uid?: string
+  id?: string
 }
