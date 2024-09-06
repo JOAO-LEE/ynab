@@ -1,4 +1,4 @@
-import { useEffect, , useState } from "react";
+import { useEffect,  useState } from "react";
 import { Transaction } from "../model/Transaction/Transaction";
 import { onSnapshot, query, collection, orderBy, where, QueryConstraint } from "firebase/firestore";
 import { db } from "../firebase-config";

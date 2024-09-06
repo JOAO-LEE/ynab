@@ -2,7 +2,7 @@ import { useReducer, useEffect, useState } from "react";
 import { db } from "../firebase-config";
 import { Document } from "../model/Document/Document";
 import { ReducerAction } from "../model/common/ReducerAction";
-import { collection as col, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection as col, addDoc, serverTimestamp, deleteDoc, doc } from "firebase/firestore";
 import { DocumentReducerEnum } from "../enum/Document.enum";
 import { Transaction } from "../model/Transaction/Transaction";
 import { FirebaseError } from "firebase/app";
@@ -24,6 +24,8 @@ const firestoreReducer = (state: Document, action: ReducerAction<DocumentReducer
       return { document: action.payload!.document!, error: null, success: true, isPending: false };
     case DocumentReducerEnum.ERROR:
       return { error: action.payload!.error, isPending: false, document: null, success: false };
+    case DocumentReducerEnum.DELETED_DOC: 
+      return { error: false, isPending: false, document: null, success: true };
     default:
       return state;
   }
@@ -40,10 +42,24 @@ export function useFirestore(collection: string) {
   };
 
   const addDocument = async ({ amount, name, uid }: Transaction) => {
-    dispatch({ type: DocumentReducerEnum.IS_PENDING});
+    dispatch({ type: DocumentReducerEnum.IS_PENDING });
     try {
       await addDoc(col(db, collection), { amount, name, uid, createdAt: serverTimestamp()});
       dispatchIfNotCancelled({ type: DocumentReducerEnum.ADDED_DOC });
+    } catch (error) {
+      if (error instanceof Error || error instanceof FirebaseError) {
+        dispatchIfNotCancelled({ type: DocumentReducerEnum.ERROR, payload: { ...response, error: error.message } });
+      }
+    }
+  };
+
+  const deleteDocument = async (id: string) => {
+    dispatch({ type: DocumentReducerEnum.IS_PENDING });
+    try {
+      const docRef = doc(db, collection, id);
+      await deleteDoc(docRef);
+      dispatchIfNotCancelled({ type: DocumentReducerEnum.DELETED_DOC });
+      
     } catch (error) {
       if (error instanceof Error || error instanceof FirebaseError) {
         dispatchIfNotCancelled({ type: DocumentReducerEnum.ERROR, payload: {...response, error: error.message } });
@@ -51,15 +67,11 @@ export function useFirestore(collection: string) {
     }
   };
 
-  // const deleteDocument = async (id: string) => {
-
-  // };
-
   useEffect(() => {
     return () => setIsCancelled(true);
   });
 
   return (
-    { addDocument, response }
+    { addDocument, response, deleteDocument }
   )
 }
