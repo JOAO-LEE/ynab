@@ -7,7 +7,6 @@ import { DocumentReducerEnum } from "../enum/Document.enum";
 import { Transaction } from "../model/Transaction/Transaction";
 import { FirebaseError } from "firebase/app";
 
-
 const inicitalState: Document = {
   document: null,
   isPending: false,
@@ -59,7 +58,6 @@ export function useFirestore(collection: string) {
       const docRef = doc(db, collection, id);
       await deleteDoc(docRef);
       dispatchIfNotCancelled({ type: DocumentReducerEnum.DELETED_DOC });
-      
     } catch (error) {
       if (error instanceof Error || error instanceof FirebaseError) {
         dispatchIfNotCancelled({ type: DocumentReducerEnum.ERROR, payload: {...response, error: error.message } });

@@ -20,6 +20,7 @@ export function useCollection(collectionSearch: string, q?: QueryTuple) {
 
     queryConstraints.push(orderBy("createdAt", "desc"));
     const qRef = query(collectionRef, ...queryConstraints);
+    
     const unsubscribe = onSnapshot(qRef,
     (snapshot) => {
       const allDocs = snapshot.docs.map((doc) => {
@@ -31,6 +32,7 @@ export function useCollection(collectionSearch: string, q?: QueryTuple) {
       });
       setDocs(allDocs);
     }, (error) => {
+      console.log(error)
       setError(error.message);
     });
 
